@@ -1,65 +1,103 @@
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const url = require('url');
 
-const DATA_FILE = path.join(__dirname, 'tasks.json');
+let tasks = [];
+const PORT = 5000;
 
-function readTasks() {
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, '[]');
-  }
-  return JSON.parse(fs.readFileSync(DATA_FILE));
+function sendJSON(res, statusCode, data) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  });
+  res.end(JSON.stringify(data));
 }
-
-function writeTasks(tasks) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2));
+function isAuthenticated(req) {
+  const authHeader = req.headers['authorization'];
+  return !!authHeader;
 }
-
 const server = http.createServer((req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
   if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    });
+    return res.end();
   }
 
-  if (req.url === '/tasks' && req.method === 'GET') {
-    const tasks = readTasks();
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(tasks));
+  const parsedUrl = url.parse(req.url, true);
+  const path = parsedUrl.pathname;
+
+  // LOGIN route
+  if (req.method === 'POST' && path === '/login') {
+  let body = '';
+  req.on('data', chunk => body += chunk);
+  req.on('end', () => {
+    try {
+      // Accept ANY username/password
+      JSON.parse(body); // just to validate JSON
+      return sendJSON(res, 200, { success: true });
+    } catch {
+      return sendJSON(res, 400, { error: 'Invalid JSON' });
+    }
+  });
+  return;
+}
+
+
+  // Auth check for all /tasks routes
+  if (path.startsWith('/tasks')) {
+    if (!isAuthenticated(req)) {
+      return sendJSON(res, 401, { error: 'Unauthorized' });
+    }
   }
 
-  else if (req.url === '/tasks' && req.method === 'POST') {
+  // GET /tasks
+  if (req.method === 'GET' && path === '/tasks') {
+    return sendJSON(res, 200, tasks);
+  }
+
+  // POST /tasks
+  if (req.method === 'POST' && path === '/tasks') {
     let body = '';
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
-      const newTask = JSON.parse(body);
-      const tasks = readTasks();
-      tasks.push(newTask);
-      writeTasks(tasks);
-      res.writeHead(201, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(newTask));
+      try {
+        const { title, description, day, date, time } = JSON.parse(body);
+if (!title) {
+  return sendJSON(res, 400, { error: 'Title is required' });
+}
+const newTask = {
+  id: Date.now(),
+  title,
+  description: description || '',
+  day,
+  date,
+  time
+};
+        tasks.push(newTask);
+        sendJSON(res, 201, newTask);
+      } catch {
+        sendJSON(res, 400, { error: 'Invalid JSON' });
+      }
     });
+    return;
   }
 
-  else if (req.url.startsWith('/tasks/') && req.method === 'DELETE') {
-    const id = req.url.split('/')[2];
-    const tasks = readTasks().filter(task => task.id !== id);
-    writeTasks(tasks);
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: 'Deleted' }));
+  // DELETE /tasks/:id
+  if (req.method === 'DELETE' && path.startsWith('/tasks/')) {
+    const idStr = path.split('/')[2];
+    const id = parseInt(idStr);
+    if (isNaN(id)) return sendJSON(res, 400, { error: 'Invalid ID' });
+    tasks = tasks.filter(task => task.id !== id);
+    return sendJSON(res, 200, { message: 'Task deleted' });
   }
 
-  else {
-    res.writeHead(404);
-    res.end('Not Found');
-  }
+  sendJSON(res, 404, { error: 'Not Found' });
 });
 
-const PORT = 5000;
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
