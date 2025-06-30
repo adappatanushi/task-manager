@@ -1,0 +1,385 @@
+
+ @keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+ /* Full page gradient background */
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #6865f6, #e585fd);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Main container styling */
+.App {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffffee;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+/* Header */
+header {
+  background: linear-gradient(90deg, #858bfd, #f665b2);
+  padding: 35px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+  box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.welcome {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Calendar Section */
+.calendar-section {
+  background: #fff8e7;
+  padding: 35px 20px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  margin-bottom: 30px;
+  animation: fadeSlideIn 1s ease;
+}
+
+.calendar-section h2 {
+  margin-bottom: 25px;
+  color: #5c51f5;
+  font-size: 2rem;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.custom-calendar {
+  border: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  max-width: 100%;
+  padding: 10px;
+  background: #fff;
+}
+
+.custom-calendar .react-calendar__tile--active {
+  background: #5154f5 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.selected-date {
+  margin-top: 16px;
+  font-weight: bold;
+  color: #5f51f5;
+  font-size: 1.1rem;
+}
+
+/* Task Form */
+.form {
+  background: #fff3e0;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+  animation: fadeSlideIn 1s ease;
+}
+
+.form input {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.form button {
+  background: #7251f5;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form button:hover {
+  background: #8e65ff;
+}
+
+/* Task List */
+.task-list {
+  margin-bottom: 30px;
+  animation: fadeSlideIn 1s ease;
+}
+
+.task-list h2 {
+  text-align: center;
+  color: #8251f5;
+  margin-bottom: 25px;
+  font-size: 2rem;
+}
+
+.task {
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s;
+}
+
+.task:hover {
+  transform: translateY(-2px);
+}
+
+.task h3 {
+  margin-top: 0;
+  color: #5951f5;
+  font-size: 1.4rem;
+}
+
+.task p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.task-meta {
+  font-size: 0.95rem;
+  color: #999;
+}
+
+.task button {
+  background: #8851f5;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 12px;
+  transition: background 0.3s;
+  transform: translateY(-2px);
+}
+
+.task button:hover {
+  background: #7c65ff;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  animation: fadeSlideIn 1s ease;
+}
+
+.logout {
+  background: #5151f5;
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.logout:hover {
+  background: #6589ff;
+}
+
+.calendar-section {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  align-self:center;
+}
+
+.selected-date {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #141E30;
+}
+
+.form {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.form input, .form button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.form button {
+  background-color: #7556ff;
+  color: #141E30;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form button:hover {
+  background-color: #7a95ff;
+}
+
+.task-list {
+  margin: 20px auto;
+}
+
+.task {
+  background: white;
+  margin-bottom: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.task:hover {
+  transform: translateY(-2px);
+}
+
+.task h3 {
+  margin: 0 0 8px;
+  color: #141E30;
+}
+
+.task-meta, .task-reminder {
+  font-size: 14px;
+  color: #555;
+}
+
+/* LOGIN PAGE */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: #141E30;  /* Dark blue gradient */
+  background: linear-gradient(135deg, #243B55, #141E30);
+  padding: 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  text-align: center;
+  color: #fff;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #FFCF56;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #ddd;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  outline: none;
+  transition: background 0.3s;
+}
+
+.login-container input:focus {
+  background: rgba(255,255,255,0.2);
+}
+
+.password-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.password-wrapper input {
+  flex: 1;
+}
+
+.toggle-button {
+  background: #FFCF56;
+  color: #141E30;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.toggle-button:hover {
+  background: #ffd87a;
+}
+
+.login-button {
+  width: 100%;
+  background: #FFCF56;
+  color: #141E30;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.login-button:hover {
+  background: #ffd87a;
+}
